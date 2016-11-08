@@ -39,6 +39,7 @@ angular.module('index-app', ['firebase'])
 	$scope.txtPassword = '';
 	$scope.loggedIn  = false;
 	$scope.displayEmail = '';
+	$scope.username='';
 	
 	//login function
 	$scope.login = function(){
@@ -93,6 +94,7 @@ angular.module('index-app', ['firebase'])
 			$scope.changeLoggedIn(true);
 			console.log($scope.loggedIn);
 			$scope.displayEmail = user.email;
+			$scope.userData={};
 			$scope.$apply();
 
 			var usersRef = firebase.database().ref('users');
@@ -100,7 +102,6 @@ angular.module('index-app', ['firebase'])
 			usersArray.$loaded()
 				.then(function(x){
 					console.log(usersArray.$getRecord(user.uid));
-					
 					if(usersArray.$getRecord(user.uid) == null){
 						console.log('it is null and i am setting new profile for it');
 						firebase.database().ref('users/'+user.uid).set({
@@ -110,11 +111,11 @@ angular.module('index-app', ['firebase'])
 							team: ['null']
 						});
 					}
+					$scope.username = usersArray.$getRecord(user.uid).name;
 				})
 				.catch(function(error){
 					console.log("Error:"+error);
 				});
-			
 		}else{
 			console.log('not log in');
 			$scope.changeLoggedIn(false);
