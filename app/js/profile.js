@@ -69,7 +69,11 @@ angular.module('profile-app', ['firebase'])
                 data.language = $scope.userData.language;
                 data.gpa = $scope.userData.gpa;
                 data.description = $scope.userData.description;
-                data.$save();
+                data.$save()
+                    .then(function(s){
+                        console.log('saved');
+                        $scope.refreshInput();
+                    });
                 console.log('done');
                 })
             .catch(function(error){
@@ -77,7 +81,7 @@ angular.module('profile-app', ['firebase'])
             });
         console.log(currentUser.uid);
         console.log('Submitted');
-        $scope.refreshInput();
+       // $scope.refreshInput();
     }
 
     //refresh input box
@@ -93,6 +97,7 @@ angular.module('profile-app', ['firebase'])
                     $scope.userData.name = currentUserData.name;
                     $scope.userData.gpa = currentUserData.gpa;
                     $scope.userData.team = currentUserData.team;
+                    console.log(data.language);
                     $scope.userData.language = currentUserData.language;
                     $scope.userData.eventlist = currentUserData.eventlist;
                     $scope.username = currentUserData.name;
