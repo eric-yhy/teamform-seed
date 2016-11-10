@@ -44,7 +44,12 @@ angular.module('profile-app', ['firebase'])
 
     //Add language
     $scope.addLanguage = function(){
-        $scope.userData.language.push($scope.txtLanguage);
+        if($scope.userData.language==null){
+            $scope.userData.language = [];
+            $scope.userData.language.push($scope.txtLanguage);
+        }else{
+            $scope.userData.language.push($scope.txtLanguage);
+        }
         $scope.txtLanguage = '';
     }
 
@@ -54,7 +59,7 @@ angular.module('profile-app', ['firebase'])
         $scope.userData.language.splice($scope.userData.language.indexOf(lan),1);
     }
 
-    //check userdata
+    //check userdata(Name,language,gpa cannot be null)
     $scope.checkUserData = function(){
         if($scope.userData.name == null){
             $window.alert('Name cannot be null');
@@ -66,7 +71,7 @@ angular.module('profile-app', ['firebase'])
             $window.alert('gpa cannot be null');
             return false;
         }else{
-            return ture;
+            return true;
         }
     }
 
@@ -92,6 +97,7 @@ angular.module('profile-app', ['firebase'])
                 data.$save()
                     .then(function(s){
                         console.log('saved');
+                        $window.alert('You have submitted your profile');
                         $scope.refreshInput();
                     })
                     .catch(e=>console.log(e));
