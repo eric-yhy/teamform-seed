@@ -75,7 +75,7 @@ angular.module('profile-app', ['firebase'])
         }
     }
 
-    //Submit userData
+    //Submit u-fixserData
     //this will only submit name, language, gpa and description
     $scope.submitUserData = function(){
         if($scope.checkUserData() == false){
