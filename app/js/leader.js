@@ -12,22 +12,22 @@ angular.module('leader-app', ['firebase'])
     $scope.teamid = getURLParameter("teamid");
 
     //create team function
-    $scope.createTeam = function(){
-        console.log('creating team');
-        var ref = firebase.database().ref("events/"+$scope.eventid);
-        console.log(ref);
-        var teamkey = ref.push().key;
-        console.log(teamkey);
-        var event = $firebaseObject(ref);
-        event.$loaded()
-            .then(function(data){
-                console.log(data);
-                var newteamRef = firebase.database().ref('events/'+$scope.eventid+'/'+teamkey);
-                var teamobject = $firebaseObject(newteamRef);
-                teamobject.teamName = "test name";
-                teamobject.$save();
-            });
-    }
+    // $scope.createTeam = function(){
+    //     console.log('creating team');
+    //     var ref = firebase.database().ref("events/"+$scope.eventid);
+    //     console.log(ref);
+    //     var teamkey = ref.push().key;
+    //     console.log(teamkey);
+    //     var event = $firebaseObject(ref);
+    //     event.$loaded()
+    //         .then(function(data){
+    //             console.log(data);
+    //             var newteamRef = firebase.database().ref('events/'+$scope.eventid+'/'+teamkey);
+    //             var teamobject = $firebaseObject(newteamRef);
+    //             teamobject.teamName = "test name";
+    //             teamobject.$save();
+    //         });
+    // }
 
     //$scope.users is an array of users in firebase
     var usersRef = firebase.database().ref('users');
