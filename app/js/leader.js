@@ -43,6 +43,7 @@ angular.module('leader-app', ['firebase'])
     $scope.addPre = function(){
         console.log('addPre pressed');
         $scope.preference.push($scope.addpreference);
+        $scope.preference.sort();
         $scope.addpreference = '';
         var db = firebase.database();
         var teamRef  = db.ref('events/'+$scope.eventid+'/teams/'+$scope.teamid);
