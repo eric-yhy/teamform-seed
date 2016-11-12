@@ -11,6 +11,11 @@ angular.module('leader-app', ['firebase'])
     $scope.eventid = getURLParameter("eventid");
     $scope.teamid = getURLParameter("teamid");
 
+    //team description, preference
+    $scope.teamDescription = '';
+    $scope.preference = [];
+    $scope.addpreference = 'hi';
+
     
    //create team function
     //  $scope.createTeam = function(){
@@ -34,7 +39,46 @@ angular.module('leader-app', ['firebase'])
     var usersRef = firebase.database().ref('users');
     $scope.users = $firebaseArray(usersRef);
 	
-    
+    //addpreference
+    $scope.addPre = function(){
+        console.log('addPre pressed');
+        $scope.preference.push($scope.addpreference);
+        $scope.addpreference = '';
+        var db = firebase.database();
+        var teamRef  = db.ref('events/'+$scope.eventid+'/teams/'+$scope.teamid);
+        var teamData = $firebaseObject(teamRef);
+        teamData.$loaded()
+            .then(function(data){
+                teamData.preference = $scope.preference;
+                teamData.$save()
+                    .then(function(s){
+                        console.log('saved');
+                    })
+                    .catch(e=>console.log(e));
+            })
+            .catch(e=>console.log(e));
+    }
+
+    //removepreference
+    $scope.removePre = function(target){
+        console.log('remove clicked');
+        console.log($scope.preference.indexOf(target));
+        $scope.preference.splice($scope.preference.indexOf(target),1);
+        var db = firebase.database();
+        var teamRef  = db.ref('events/'+$scope.eventid+'/teams/'+$scope.teamid);
+        var teamData = $firebaseObject(teamRef);
+        teamData.$loaded()
+            .then(function(data){
+                teamData.preference = $scope.preference;
+                teamData.$save()
+                    .then(function(s){
+                        console.log('saved');
+                    })
+                    .catch(e=>console.log(e));
+            })
+            .catch(e=>console.log(e));
+
+    }
 
 	//logout function
 	$scope.logout = function(){
@@ -58,7 +102,26 @@ angular.module('leader-app', ['firebase'])
                 });
             $scope.loggedIn = true;
 			$scope.uid = user.uid;
-        }else{
+            //teamData
+            var teamRef  = database.ref('events/'+$scope.eventid+'/teams/'+$scope.teamid);
+            var teamData = $firebaseObject(teamRef);
+            teamData.$loaded()
+                .then(function(data){
+                    console.log(data);
+                    console.log('teamData loaded');
+                    console.log(teamData.description);
+                    if(teamData.preference == null){
+                        $scope.preference = [];
+                    }else{
+                        $scope.preference = teamData.preference;
+                    }
+                    if(teamData.description == null){
+                        $scope.description = '';
+                    }else{
+                        $scope.description = teamData.description;
+                    }
+                });
+            }else{
 			console.log('not log in');
             $window.location.href = '/index.html';
 		}
