@@ -41,7 +41,8 @@
       <p>Preference:<input ng-model='addpreference'></input></p>
       <button class='btn btn-primary' ng-click='addPre()'>Add</button>
       <p>Description:</p>
-      <textarea ng-model='description'></textarea>
+      <textarea ng-model='teamDescription'></textarea>
+      <button class='btn btn-primary' ng-click='changeDescription()'>Change</button>
       <p>Preference list:</p>
       <ol>
         <li ng-repeat='pre in preference'>{{pre}}<a  ng-click="removePre(pre)">Remove</a></li>

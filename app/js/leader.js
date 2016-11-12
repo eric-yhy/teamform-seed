@@ -16,6 +16,24 @@ angular.module('leader-app', ['firebase'])
     $scope.preference = [];
     $scope.addpreference = 'hi';
 
+    //change description
+    $scope.changeDescription = function(){
+        console.log('click change')
+        var db = firebase.database();
+        var teamRef  = db.ref('events/'+$scope.eventid+'/teams/'+$scope.teamid);
+        var teamData = $firebaseObject(teamRef);
+        teamData.$loaded()
+            .then(function(data){
+                console.log($scope.teamDescription);
+                teamData.description = $scope.teamDescription;
+                teamData.$save()
+                    .then(function(s){
+                        console.log('saved');
+                    })
+                    .catch(e=>console.log(e));
+            })
+            .catch(e=>console.log(e));
+    }
     
    //create team function
     //  $scope.createTeam = function(){
@@ -117,9 +135,9 @@ angular.module('leader-app', ['firebase'])
                         $scope.preference = teamData.preference;
                     }
                     if(teamData.description == null){
-                        $scope.description = '';
+                        $scope.teamDescription = '';
                     }else{
-                        $scope.description = teamData.description;
+                        $scope.teamDescription = teamData.description;
                     }
                 });
             }else{
