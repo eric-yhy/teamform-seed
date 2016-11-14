@@ -14,8 +14,8 @@ angular.module('leader-app', ['firebase'])
     //team description, preference
     $scope.teamDescription = '';
     $scope.preference = [];
-    $scope.addpreference = 'hi';
-    var filtedUsers = [];
+    $scope.addpreference = '';
+    $scope.filtedUsers = [];
 
     //change description
     $scope.changeDescription = function(){
@@ -80,21 +80,24 @@ angular.module('leader-app', ['firebase'])
     }
     //filter
         $scope.filterPre = function(){
+            $scope.filtedUsers = [];
         console.log('filterPre pressed');
         var db = firebase.database();
         var teamRef  = db.ref('events/'+$scope.eventid+'/teams/'+$scope.teamid);
         var teamData = $firebaseObject(teamRef);   
 
-        var u = $firebaseArray(users);
+        var ref = firebase.database().ref('users');
+        var u = $firebaseArray(ref);
 
         u.$loaded()
-         .then(function(){
+         .then(function(data){
+            console.log(u);
             angular.forEach(u, function(user){
                 var haveAllPre = true;
                 for (var i = teamData.preference.length - 1; i >= 0; i--) {
                    var haveThisPre = false;
                    for (var j = user.language.length - 1; j >= 0; j--) {
-                     if(teamData.preference[i]==user.$language[j]){
+                     if(teamData.preference[i]==user.language[j]){
                          haveThisPre = true;
                         }
                      }
@@ -103,15 +106,21 @@ angular.module('leader-app', ['firebase'])
                       }
                     } 
                 if(haveAllPre){
-                   filtedUsers.push(user.name);
+                    var userR = firebase.database().ref('users/'+user.$id+'/teams/'+$scope.eventid);
+                    var uEvent = $firebaseObject(userR);
+                    uEvent.$loaded()
+                        .then(function(data){
+                            console.log(uEvent.role);
+                            if(uEvent.role == null || uEvent.role == "null"){
+                               $scope.filtedUsers.push(user);
+
+                          }
+                        })
+                        .catch(e=>console.log(e));
                   }   
-             })
+             });
          });
 
-        for (var i = filtedUsers.length - 1; i >= 0; i--) {
-            document.getElementById("haha").innerHTML = 
-            document.getElementById("haha").innerHTML + filtedUsers[i]
-            }
         
     }
 
