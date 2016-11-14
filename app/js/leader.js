@@ -15,6 +15,7 @@ angular.module('leader-app', ['firebase'])
     $scope.teamDescription = '';
     $scope.preference = [];
     $scope.addpreference = 'hi';
+    var filtedUsers = [];
 
     //change description
     $scope.changeDescription = function(){
@@ -77,6 +78,35 @@ angular.module('leader-app', ['firebase'])
             })
             .catch(e=>console.log(e));
     }
+    //filter
+        $scope.filterPre = function(){
+        console.log('filterPre pressed');
+        var db = firebase.database();
+        var teamRef  = db.ref('events/'+$scope.eventid+'/teams/'+$scope.teamid);
+        var teamData = $firebaseObject(teamRef);   
+
+        var u = $firebaseArray(users);
+
+        u.$loaded()
+         .then(function(){
+            angular.forEach(u, function(user){
+                
+                   filtedUsers.push("jj");
+                  
+             })
+         });
+
+        for (var i = filtedUsers.length - 1; i >= 0; i--) {
+            document.getElementById("haha").innerHTML = 
+            document.getElementById("haha").innerHTML + filtedUsers[i]
+            }
+        
+    }
+
+      
+
+        
+
 
     //removepreference
     $scope.removePre = function(target){
