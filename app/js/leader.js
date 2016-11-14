@@ -90,9 +90,21 @@ angular.module('leader-app', ['firebase'])
         u.$loaded()
          .then(function(){
             angular.forEach(u, function(user){
-                
-                   filtedUsers.push("jj");
-                  
+                var haveAllPre = true;
+                for (var i = teamData.preference.length - 1; i >= 0; i--) {
+                   var haveThisPre = false;
+                   for (var j = user.language.length - 1; j >= 0; j--) {
+                     if(teamData.preference[i]==user.$language[j]){
+                         haveThisPre = true;
+                        }
+                     }
+                   if(!haveThisPre){
+                      haveAllPre = false;
+                      }
+                    } 
+                if(haveAllPre){
+                   filtedUsers.push(user.name);
+                  }   
              })
          });
 
