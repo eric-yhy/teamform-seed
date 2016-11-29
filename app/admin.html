@@ -78,33 +78,29 @@
 <body ng-controller="AdminCtrl">
   <div ng-include="'navbar.html'" id='navbarMenu'></div>
   <br>
-   <div class="col-md-12"><br></div>
   <div>
-   
     <section style="background-image: url('img/img1_thin.jpg');" class="banner img-responsive">
       <br><br><br><br><br>
       <h1 class="pull-left banner_title">{{param.eventName}}&nbsp;Administrative Page</h1>
-      <div class="col-md-12">
-         <div class="col-md-4"></div>
-        <ul class="nav nav-tabs">
-          <li class="active"><a data-toggle="tab" href="#home">Event description</a></li>
-          <li><a data-toggle="tab" href="#menu1">Announcements</a></li>
-          <li><a data-toggle="tab" href="#menu2">Teams</a></li>
-          <li><a data-toggle="tab" href="#menu3">WaitList</a></li>
-        </ul>
-    <div class="tab-content text-center" style="min-height:300px;">
-    <div id="home" class="tab-pane fade in active">
+    </section>
+  </div>
+  <div id="load_screen">
+    <div id="loading" class="text-center"> <img src="img/loading.gif">loading ...</div>
+  </div>
+  <div class="container">
+    <div id="admin_page" class="text-center">
       <div id="admin_event_div">
-          
         <!--<div class="col-lg-8">-->
         <div ng-include="'description.html'"></div>
         <!--</div>-->
         <!--smart generator-->
         <div class="col-md-12" id="admin_action_buttons" ng-hide="editable">
-          <!--<button id="btn_invite_join" type="button" class="btn btn-primary" ng-click="inviteJoin_click()" ng-hide="(deadline-today)>0">
+          <button id="btn_invite_join" type="button" class="btn btn-primary" ng-click="inviteJoin_click()">
             Invite people to join
-          </button>-->
-
+          </button>
+          <button id="btn_smart_generator" type="button" class="btn btn-primary" ng-click="generate_click()" ng-hide="(deadline-today)>0">
+            Generate Teams
+          </button>
           <!--show generator if achieve deadline-->
           <button id="btn_event_edit" class="btn btn-primary" ng-click="edit_click()">
               <span class="glyphicon glyphicon-pencil" aria-label="edit"></span>&nbsp;Edit Event
@@ -175,43 +171,12 @@
           </div>
           <div class="col-md-3 col-xs-3"></div>
         </div>
-    </div>
-          <!--<div class="col-md-12" id="inviteJoinDiv">
-        <center>
-          <br>
-          <h2>Invite List</h2>
-        </center>
-        <div ng-include="'teamList.html'" id="teamList"></div>
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-          <table id="inviteUserList" class="table table-hover text-left">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Preference</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody ng-repeat="member in users" ng-init="getRole(member)" ng-if="member.role == null">
-              <tr>
-                <td><a href="profile.html?q={{member.$id}}">{{member.name}}</a></td>
-                <td>
-                  <span ng-repeat="p in member.language">{{p}}{{$last ? '' : ', '}}
-                  </span>
-                </td>
-                <td><button class="btn btn-primary" ng-click="inviteToJoin(member)" ng-disabled="member.isJoin">
-                  Invite
-                  </button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="col-md-2"></div>
-        <div class="col-md-12"><button class="btn btn-primary" ng-click="inviteJoinDone()">Done</button></div>
-      </div>-->
-    </div>
-    <div id="menu1" class="tab-pane fade">
-          <div class="col-md-12 announcement_div">
+        <!--end of edit panel-->
+        <br><br><br>
+
+        <div class="col-md-12"><br><br></div>
+        <!--announcement div-->
+        <div class="col-md-12 announcement_div">
           <br><br>
           <h2 style="display:inline;vertical-align: middle;" class="text-center">Announcements</h2>
           <button id="btn_new_announcement" type="button" class="btn btn-primary" style="vertical-align: middle;" ng-click="new_announcement_click()"
@@ -220,7 +185,7 @@
             </button>
           <!--new announcement-->
           
-          <br>
+   <br>
             <!--after click new new announcement button, it will show input text box and send button-->
             <div class="col-md-12" id="input_announcement" ng-show="writingAnnouncement">
               <br>
@@ -231,22 +196,14 @@
             </div>
           
           <br>
-
           <div class="text-center" ng-include="'editAnn.html'"></div>
         </div>
-
-
 
       <!--teams list-->
       <br><br>
       
-
-    </div>
-    <div id="menu2" class="tab-pane fade">
-
       <div class="col-md-12">
         <center>
-          <br>
           <h2>Teams</h2>
         </center>
         <!--<div ng-include="'teamList.html'" id="teamList"></div>-->
@@ -278,15 +235,16 @@
             </table>
             <!--</div>
             <div class="col-md-3"></div>-->
-
-          <p ng-show="teams.length ==0" >This event do not have any teams. Ask users to form team now!</p>
+           
+          <p ng-show="teams.length ==0">This event do not have any team. Ask students/ members to form team now!</p>
         </div>
         <!--end of teams list-->
-    </div>
-    <div id="menu3" class="tab-pane fade">
+
+
+
+       
         <div class="col-md-12 text-center">
           <center>
-            <br>
             <h2>Members Without Groups</h2>
           </center>
           <!--<div ng-include="'teamList.html'" id="teamList"></div>-->
@@ -313,27 +271,19 @@
                 </tr>
               </tbody>
             </table>
-
             <!--</div>
             <div class="col-md-3"></div>-->
           </div>
           <center>
-            <p ng-show="waitList.length ==0" >No one on the waitlist.</p>
-            <br>
-             <button id="btn_smart_generator" type="button" class="btn btn-primary" ng-click="generate_click()" ng-hide="(deadline-today)>0">
-              Generate Teams
-              </button>
+            <p ng-show="waitList.length ==0">No one on the waitlist.</p>
           </center>
         </div>
-
         
-
       <!--</divs>-->
-
       <!--end of teams & member list-->
       <div class="col-md-12" id="inviteJoinDiv">
         <center>
-          <h2>Invite people to join this event</h2>
+          <h2>Invite List</h2>
         </center>
         <!--<div ng-include="'teamList.html'" id="teamList"></div>-->
         <div class="col-md-2"></div>
@@ -362,20 +312,10 @@
         </div>
         <div class="col-md-2"></div>
         <div class="col-md-12"><button class="btn btn-primary" ng-click="inviteJoinDone()">Done</button></div>
-    </div>
-  </div>
-
       </div>
-    </section>
-  </div>
-  <div id="load_screen">
-    <div id="loading" class="text-center"> <img src="img/loading.gif">loading ...</div>
-  </div>
-  <div class="container">
- 
-    <div id="admin_page" class="text-center">
- 
-   
+
+    <!--</div>-->
+    <!--end of admin_page_controller-->
     <div class="col-md-12 pull-left">
       <!-- FOOTER -->
       <hr>
@@ -385,7 +325,6 @@
         <p style="text-align:left;">Powered by <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a></p>
       </footer>
     </div>
-  </div>
   </div>
   </div>
   <!--container /div-->

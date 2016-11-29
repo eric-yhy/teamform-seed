@@ -230,8 +230,6 @@ angular.module('leader-app', ['firebase'])
 
             //  location.reload();
 
-            window.location.reload();
-
         }
 
         //kick member
@@ -264,15 +262,13 @@ angular.module('leader-app', ['firebase'])
             userNewTeamObject.$loaded()
                 .then(function (data) {
                     if (userNewTeamObject.role != 'admin' && userNewTeamObject.role != 'leader') {
-                        userNewTeamObject.role = "null";
+                        userNewTeamObject.role = null;
                         userNewTeamObject.teamid = null;
                         userNewTeamObject.$save();
                     }
                     console.log(userNewTeamObject);
                 });
             //location.reload();
-            
-            window.location.reload();
         }
 
 
@@ -506,25 +502,6 @@ angular.module('leader-app', ['firebase'])
         $scope.edit_click = function () {
             $scope.edit_leader_visibility = true;
         };
-
-
-
-        //real time filter
-        $scope.matchRule = function (str, rule) {
-			var matchtest = new RegExp(rule).test(str);
-			console.log("match: " + matchtest);
-			return matchtest;
-		}
-
-		$scope.realtimefilter = function (username) {
-			//	var rulename = $scope.eventName + "*";
-			//	var reultRight=$scope.matchRuleShort(eventname, rulename);
-			var rulename = $scope.nameToInvite;
-			var reultLeft = $scope.matchRule(username, rulename);
-			return (reultLeft);
-		}
-
-
         //logout function
         $scope.logout = function () {
             firebase.auth().signOut();
